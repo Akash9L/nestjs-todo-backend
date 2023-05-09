@@ -1,13 +1,29 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post, Delete, ValidationPipe, Param, Patch } from '@nestjs/common';
 import { AppService } from './app.service';
+import { TaskDto } from './task.dto';
 
 @Controller('api')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Get('health-check')
+  healthCheck(): string {
+    return this.appService.healthCheck();
+  }
+
+  @Get('')
+  getAllTasks() {
+    return this.appService.getAllTasks();
+  }
+
+  @Post('')
+  createItem(@Body(new ValidationPipe()) taskDto: TaskDto) {
+    return this.appService.addTask(taskDto);
+  }
+
+  @Delete(':id')
+  deleteItem(@Param('id') id: string) {
+    return this.appService.deleteTaskById(Number(id));
   }
 
 }

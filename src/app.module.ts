@@ -15,17 +15,13 @@ import { TodoListEntity } from './todo.entity';
       inject: [ConfigService],
 
       useFactory: (configService: ConfigService) => ({
+        url: configService.get('DB_URL'),
         type: 'postgres',
-        host: configService.get('DB_HOST'),
-        port: Number(configService.get('DB_PORT')),
-        username: configService.get('DB_USERNAME'),
-        password: configService.get('DB_PASSWORD'),
-        database: configService.get('DB_NAME'),
         entities: [
           'dist/**/*.entity{.ts,.js}',
           'node_modules/node-modules-internal/dist/**/*.entity{.ts,.js}',
         ],
-        synchronize: false,
+        synchronize: true,
       }),
     }),
     TypeOrmModule.forFeature([TodoListEntity])

@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Post, Delete, ValidationPipe, Param, Patch } from '@nestjs/common';
 import { AppService } from './app.service';
-import { TaskDto } from './task.dto';
+import { TaskDto, UpdateTaskDto } from './task.dto';
 
-@Controller('api')
+@Controller('api/task')
 export class AppController {
   constructor(private readonly appService: AppService) { }
 
@@ -19,6 +19,11 @@ export class AppController {
   @Post('')
   createItem(@Body(new ValidationPipe()) taskDto: TaskDto) {
     return this.appService.addTask(taskDto);
+  }
+
+  @Patch(':id')
+  updateItem(@Param('id') id: string, @Body(new ValidationPipe()) taskDto: UpdateTaskDto) {
+    return this.appService.updateTask(Number(id), taskDto);
   }
 
   @Delete(':id')

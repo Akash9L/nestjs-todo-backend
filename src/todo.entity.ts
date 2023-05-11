@@ -8,7 +8,7 @@ import {
 
 export enum TodoListStatusEnum {
     INCOMPLETE = 'INCOMPLETE',
-    COMPLETED = 'COMPLETE',
+    COMPLETED = 'COMPLETED',
 }
 @Entity()
 export class TodoListEntity {

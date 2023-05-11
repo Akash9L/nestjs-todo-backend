@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TodoListEntity, TodoListStatusEnum } from './todo.entity';
 import { Repository } from 'typeorm';
-import { TaskDto } from './task.dto';
+import { TaskDto, UpdateTaskDto } from './task.dto';
 
 @Injectable()
 export class AppService {
@@ -17,7 +17,11 @@ export class AppService {
   }
 
   getAllTasks() {
-    return this.todoListRepository.find();
+    return this.todoListRepository.find({
+      order: {
+        created_at: 'DESC'
+      }
+    });
   }
 
   addTask(taskDto: TaskDto) {
@@ -26,6 +30,10 @@ export class AppService {
     task.description = taskDto.description;
     task.status = TodoListStatusEnum.INCOMPLETE;
     return this.todoListRepository.save(task);
+  }
+
+  updateTask(taskId: number, updateDto: UpdateTaskDto) {
+    return this.todoListRepository.update(taskId, updateDto)
   }
 
   deleteTaskById(id: number) {
